@@ -1,0 +1,132 @@
+{
+	"id": "3d8330b3-32c4-5e5f-07d6-32f1cd65357d",
+	"name": "Assignment1",
+	"description": "",
+	"order": [
+		"3edc2135-d448-4bea-5345-d4a8767d5168",
+		"d56f2ac9-3953-7733-9b65-8908cd7dacf6"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 1517675265090,
+	"owner": 0,
+	"public": false,
+	"events": [],
+	"variables": [],
+	"auth": null,
+	"requests": [
+		{
+			"id": "3edc2135-d448-4bea-5345-d4a8767d5168",
+			"headers": "",
+			"headerData": [],
+			"url": "https://www.googleapis.com/books/v1/volumes?q={{book_title}}",
+			"queryParams": [
+				{
+					"key": "q",
+					"value": "{{book_title}}",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7d318986-cb11-401f-b888-0ac00403497b",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var title = jsonData.items[0].volumeInfo.title;",
+							"var id = jsonData.items[0].id;",
+							"postman.setEnvironmentVariable(\"id\", id);",
+							"console.log(\"title\" + title);",
+							"var patt = /turing/i;",
+							"",
+							"for(i= 0; i< jsonData.items.length; i++)",
+							"{",
+							"var title = jsonData.items[i].volumeInfo.title; ",
+							"var res = patt.test(title);",
+							"console.log(res);",
+							"",
+							"if(res === false)",
+							"    {",
+							"    result1 = false;",
+							"    i = jsonData.items. length;",
+							"    }",
+							"}",
+							"",
+							"tests[\"book title1\"] = (res === true);",
+							"tests[\"Contains Turing\"] = responseBody.has (\"Turing\");",
+							"tests[\"Response status 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4003ed22-45fd-4e22-bdfd-9286c03400e4",
+						"type": "text/javascript",
+						"exec": [
+							"pm.environment.set(\"book_title\", \"Turing\");",
+							""
+						]
+					}
+				}
+			],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"auth": null,
+			"time": 1518475918052,
+			"name": "Assignment1_TuringTitleSearch",
+			"description": "",
+			"collectionId": "3d8330b3-32c4-5e5f-07d6-32f1cd65357d",
+			"responses": [],
+			"preRequestScript": "pm.environment.set(\"book_title\", \"Turing\");\n",
+			"tests": "var jsonData = JSON.parse(responseBody);\nvar title = jsonData.items[0].volumeInfo.title;\nvar id = jsonData.items[0].id;\npostman.setEnvironmentVariable(\"id\", id);\nconsole.log(\"title\" + title);\nvar patt = /turing/i;\n\nfor(i= 0; i< jsonData.items.length; i++)\n{\nvar title = jsonData.items[i].volumeInfo.title; \nvar res = patt.test(title);\nconsole.log(res);\n\nif(res === false)\n    {\n    result1 = false;\n    i = jsonData.items. length;\n    }\n}\n\ntests[\"book title1\"] = (res === true);\ntests[\"Contains Turing\"] = responseBody.has (\"Turing\");\ntests[\"Response status 200\"] = responseCode.code === 200;\n",
+			"currentHelper": null,
+			"helperAttributes": null
+		},
+		{
+			"id": "d56f2ac9-3953-7733-9b65-8908cd7dacf6",
+			"headers": "",
+			"headerData": [],
+			"url": "https://www.googleapis.com/books/v1/volumes/{{id}}",
+			"queryParams": [],
+			"events": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "525c3468-d8c7-488e-9dd6-39d05af473e5",
+						"type": "text/javascript",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"var getID = pm.environment.get(\"id\");",
+							"tests[\"Contains ID from Request\"] = data.id === getID;",
+							"tests[\"Response Status 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"auth": null,
+			"time": 1518475921661,
+			"name": "Assignment1_p2_ ID",
+			"description": "",
+			"collectionId": "3d8330b3-32c4-5e5f-07d6-32f1cd65357d",
+			"responses": [],
+			"preRequestScript": null,
+			"tests": "var data = JSON.parse(responseBody);\nvar getID = pm.environment.get(\"id\");\ntests[\"Contains ID from Request\"] = data.id === getID;\ntests[\"Response Status 200\"] = responseCode.code === 200;",
+			"currentHelper": null,
+			"helperAttributes": null
+		}
+	]
+}
